@@ -60,7 +60,6 @@ class SharePlaceScreen extends Component {
   };
 
   placeNameChangedHandler = val => {
-    alert(this.state.controls.image.valid);
     this.setState(prevState => {
       return {
         controls: {
