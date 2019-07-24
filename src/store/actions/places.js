@@ -36,11 +36,13 @@ export const addPlace = (placeName, location, image) => {
           })
           .catch(err => {
             console(err);
+            alert('Something went wrong, plase try again!');
             dispatch(uiStopLoading());
           });
       })
       .catch(err => {
         console(err);
+        alert('Something went wrong, plase try again!');
         dispatch(uiStopLoading());
       });
   };
