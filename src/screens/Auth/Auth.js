@@ -83,7 +83,7 @@ class AuthScreen extends Component {
       email: this.state.controls.email.value,
       password: this.state.controls.password.value
     };
-    this.props.onTryAuth(authData);
+    this.props.onTryAuth(authData, this.state.authMode);
   };
 
   updateInputState = (key, value) => {
@@ -284,7 +284,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onTryAuth: authData => dispatch(tryAuth(authData))
+    onTryAuth: (authData, authMode) => dispatch(tryAuth(authData, authMode))
   };
 };
 

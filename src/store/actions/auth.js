@@ -2,30 +2,27 @@ import { TRY_AUTH } from './actionTypes';
 import { uiStartLoading, uiStopLoading } from './index';
 import startMainTabs from '../../screens/MainTabs/startMainTabs';
 
-export const tryAuth = authData => {
-  return dispatch => {
-    dispatch(authSignup(authData));
-  };
-};
-
-export const authSignup = authData => {
+export const tryAuth = (authData, authMode) => {
   return dispatch => {
     dispatch(uiStartLoading());
-    fetch(
-      `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=
-        AIzaSyCcL7CgmZuFNaUKmiSJZbskOZDy2ndrb-A`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          email: authData.email,
-          password: authData.password,
-          returnSecureToken: true
-        }),
-        headers: {
-          'Content-Type': 'application/json'
-        }
+
+    const apiKey = 'AIzaSyCcL7CgmZuFNaUKmiSJZbskOZDy2ndrb-A';
+    const url =
+      authMode === 'signup'
+        ? `https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=${apiKey}`
+        : `https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=${apiKey}`;
+
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify({
+        email: authData.email,
+        password: authData.password,
+        returnSecureToken: true
+      }),
+      headers: {
+        'Content-Type': 'application/json'
       }
-    )
+    })
       .catch(err => {
         console.log(err);
         alert('Authentication failed, please try again!');
@@ -34,8 +31,8 @@ export const authSignup = authData => {
       .then(res => res.json())
       .then(parsedRes => {
         dispatch(uiStopLoading());
-
         if (parsedRes.error) {
+          console.log(parsedRes.error);
           alert('Authentication failed, please try again!');
         } else {
           startMainTabs();
