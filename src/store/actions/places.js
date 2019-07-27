@@ -3,19 +3,26 @@ import { uiStartLoading, uiStopLoading, authGetToken } from './index';
 
 export const addPlace = (placeName, location, image) => {
   return dispatch => {
+    let authToken;
+
     dispatch(uiStartLoading());
     dispatch(authGetToken())
       .catch(() => {
         alert('No valid token found!');
       })
       .then(token => {
+        authToken = token;
+
         return fetch(
           'https://us-central1-awesome-places-43811.cloudfunctions.net/storeImage',
           {
             method: 'POST',
             body: JSON.stringify({
               image: image.base64
-            })
+            }),
+            headers: {
+              Authorization: 'Bearer ' + authToken
+            }
           }
         );
       })
@@ -32,7 +39,8 @@ export const addPlace = (placeName, location, image) => {
           image: parsedRes.imageUrl
         };
         return fetch(
-          'https://awesome-places-43811.firebaseio.com/places.json',
+          'https://awesome-places-43811.firebaseio.com/places.json?auth=' +
+            authToken,
           {
             method: 'POST',
             body: JSON.stringify(placeData)
