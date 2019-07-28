@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   View,
   Image,
@@ -6,17 +6,18 @@ import {
   StyleSheet,
   Text,
   Dimensions
-} from 'react-native';
-import MapView from 'react-native-maps';
+} from "react-native";
+import MapView from "react-native-maps";
 
 class PickLocation extends Component {
   state = {
     focusedLocation: {
       latitude: 37.7900352,
-      longitude: -122.401372,
+      longitude: -122.4013726,
       latitudeDelta: 0.0122,
       longitudeDelta:
-        (Dimensions.get('window').width / Dimensions.get('window').height) *
+        Dimensions.get("window").width /
+        Dimensions.get("window").height *
         0.0122
     },
     locationChosen: false
@@ -24,13 +25,11 @@ class PickLocation extends Component {
 
   pickLocationHandler = event => {
     const coords = event.nativeEvent.coordinate;
-
     this.map.animateToRegion({
       ...this.state.focusedLocation,
       latitude: coords.latitude,
       longitude: coords.longitude
     });
-
     this.setState(prevState => {
       return {
         focusedLocation: {
@@ -41,7 +40,6 @@ class PickLocation extends Component {
         locationChosen: true
       };
     });
-
     this.props.onLocationPick({
       latitude: coords.latitude,
       longitude: coords.longitude
@@ -49,25 +47,22 @@ class PickLocation extends Component {
   };
 
   getLocationHandler = () => {
-    navigator.geolocation.getCurrentPosition(
-      pos => {
-        const coordsEvent = {
-          nativeEvent: {
-            coordinate: {
-              latitude: pos.coords.latitude,
-              longitude: pos.coords.longitude
-            }
+    navigator.geolocation.getCurrentPosition(pos => {
+      const coordsEvent = {
+        nativeEvent: {
+          coordinate: {
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude
           }
-        };
-
-        this.pickLocationHandler(coordsEvent);
-      },
-      err => {
-        console.log(err);
-        alert('Fetchin the position failed, please pick one manually!');
-      }
-    );
-  };
+        }
+      };
+      this.pickLocationHandler(coordsEvent);
+    },
+  err => {
+    console.log(err);
+    alert("Fetching the Position failed, please pick one manually!");
+  })
+  }
 
   render() {
     let marker = null;
@@ -82,7 +77,7 @@ class PickLocation extends Component {
           initialRegion={this.state.focusedLocation}
           style={styles.map}
           onPress={this.pickLocationHandler}
-          ref={ref => (this.map = ref)}
+          ref={ref => this.map = ref}
         >
           {marker}
         </MapView>
@@ -96,11 +91,11 @@ class PickLocation extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    alignItems: 'center'
+    width: "100%",
+    alignItems: "center"
   },
   map: {
-    width: '100%',
+    width: "100%",
     height: 250
   },
   button: {

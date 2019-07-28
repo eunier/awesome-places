@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -8,26 +8,26 @@ import {
   ScrollView,
   Image,
   ActivityIndicator
-} from 'react-native';
-import { connect } from 'react-redux';
+} from "react-native";
+import { connect } from "react-redux";
 
-import { addPlace } from '../../store/actions/index';
-import PlaceInput from '../../components/PlaceInput/PlaceInput';
-import MainText from '../../components/UI/MainText/MainText';
-import HeadingText from '../../components/UI/HeadingText/HeadingText';
-import PickImage from '../../components/PickImage/PickImage';
-import PickLocation from '../../components/PickLocation/PickLocation';
-import validate from '../../utility/validation';
+import { addPlace } from "../../store/actions/index";
+import PlaceInput from "../../components/PlaceInput/PlaceInput";
+import MainText from "../../components/UI/MainText/MainText";
+import HeadingText from "../../components/UI/HeadingText/HeadingText";
+import PickImage from "../../components/PickImage/PickImage";
+import PickLocation from "../../components/PickLocation/PickLocation";
+import validate from "../../utility/validation";
 
 class SharePlaceScreen extends Component {
   static navigatorStyle = {
-    navBarButtonColor: 'orange'
+    navBarButtonColor: "orange"
   };
 
   state = {
     controls: {
       placeName: {
-        value: '',
+        value: "",
         valid: false,
         touched: false,
         validationRules: {
@@ -51,10 +51,10 @@ class SharePlaceScreen extends Component {
   }
 
   onNavigatorEvent = event => {
-    if (event.type === 'NavBarButtonPress') {
-      if (event.id === 'sideDrawerToggle') {
+    if (event.type === "NavBarButtonPress") {
+      if (event.id === "sideDrawerToggle") {
         this.props.navigator.toggleDrawer({
-          side: 'left'
+          side: "left"
         });
       }
     }
@@ -129,44 +129,43 @@ class SharePlaceScreen extends Component {
       submitButton = <ActivityIndicator />;
     }
 
-    if (this)
-      return (
-        <ScrollView>
-          <View style={styles.container}>
-            <MainText>
-              <HeadingText>Share a Place with us!</HeadingText>
-            </MainText>
-            <PickImage onImagePicked={this.imagePickedHandler} />
-            <PickLocation onLocationPick={this.locationPickedHandler} />
-            <PlaceInput
-              placeData={this.state.controls.placeName}
-              onChangeText={this.placeNameChangedHandler}
-            />
-            <View style={styles.button}>{submitButton}</View>
-          </View>
-        </ScrollView>
-      );
+    return (
+      <ScrollView>
+        <View style={styles.container}>
+          <MainText>
+            <HeadingText>Share a Place with us!</HeadingText>
+          </MainText>
+          <PickImage onImagePicked={this.imagePickedHandler} />
+          <PickLocation onLocationPick={this.locationPickedHandler} />
+          <PlaceInput
+            placeData={this.state.controls.placeName}
+            onChangeText={this.placeNameChangedHandler}
+          />
+          <View style={styles.button}>{submitButton}</View>
+        </View>
+      </ScrollView>
+    );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center'
+    alignItems: "center"
   },
   placeholder: {
     borderWidth: 1,
-    borderColor: 'black',
-    backgroundColor: '#eee',
-    width: '80%',
+    borderColor: "black",
+    backgroundColor: "#eee",
+    width: "80%",
     height: 150
   },
   button: {
     margin: 8
   },
   previewImage: {
-    width: '100%',
-    height: '100%'
+    width: "100%",
+    height: "100%"
   }
 });
 
@@ -183,7 +182,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SharePlaceScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SharePlaceScreen);

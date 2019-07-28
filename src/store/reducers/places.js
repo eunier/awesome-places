@@ -1,5 +1,4 @@
-import { SET_PLACES, REMOVE_PLACE } from '../actions/actionTypes';
-import { bindActionCreators } from 'redux';
+import { SET_PLACES, REMOVE_PLACE } from "../actions/actionTypes";
 
 const initialState = {
   places: []
@@ -16,7 +15,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         places: state.places.filter(place => {
-          return place.key !== action.placeKey;
+          return place.key !== action.key;
         })
       };
     default:

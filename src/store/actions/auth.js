@@ -1,15 +1,15 @@
 import { AsyncStorage } from 'react-native';
 
-import { TRY_AUTH, AUTH_SET_TOKEN } from './actionTypes';
+import { TRY_AUTH, AUTH_SET_TOKEN, AUTH_REMOVE_TOKEN } from './actionTypes';
 import { uiStartLoading, uiStopLoading } from './index';
 import startMainTabs from '../../screens/MainTabs/startMainTabs';
+import App from '../../../App';
 
 const API_KEY = 'AIzaSyCcL7CgmZuFNaUKmiSJZbskOZDy2ndrb-A';
 
 export const tryAuth = (authData, authMode) => {
   return dispatch => {
     dispatch(uiStartLoading());
-
     let url =
       'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' +
       API_KEY;
@@ -18,7 +18,6 @@ export const tryAuth = (authData, authMode) => {
         'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' +
         API_KEY;
     }
-
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -39,7 +38,6 @@ export const tryAuth = (authData, authMode) => {
       .then(parsedRes => {
         dispatch(uiStopLoading());
         console.log(parsedRes);
-
         if (!parsedRes.idToken) {
           alert('Authentication failed, please try again!');
         } else {
@@ -58,21 +56,20 @@ export const tryAuth = (authData, authMode) => {
 
 export const authStoreToken = (token, expiresIn, refreshToken) => {
   return dispatch => {
-    dispatch(authSetToken(token));
-
     const now = new Date();
     const expiryDate = now.getTime() + expiresIn * 1000;
-
+    dispatch(authSetToken(token, expiryDate));
     AsyncStorage.setItem('ap:auth:token', token);
     AsyncStorage.setItem('ap:auth:expiryDate', expiryDate.toString());
     AsyncStorage.setItem('ap:auth:refreshToken', refreshToken);
   };
 };
 
-export const authSetToken = token => {
+export const authSetToken = (token, expiryDate) => {
   return {
     type: AUTH_SET_TOKEN,
-    token: token
+    token: token,
+    expiryDate: expiryDate
   };
 };
 
@@ -80,10 +77,9 @@ export const authGetToken = () => {
   return (dispatch, getState) => {
     const promise = new Promise((resolve, reject) => {
       const token = getState().auth.token;
-
-      if (!token) {
+      const expiryDate = getState().auth.expiryDate;
+      if (!token || new Date(expiryDate) <= new Date()) {
         let fetchedToken;
-
         AsyncStorage.getItem('ap:auth:token')
           .catch(err => reject())
           .then(tokenFromStorage => {
@@ -109,7 +105,6 @@ export const authGetToken = () => {
         resolve(token);
       }
     });
-
     return promise
       .catch(err => {
         return AsyncStorage.getItem('ap:auth:refreshToken')
@@ -166,5 +161,21 @@ export const authClearStorage = () => {
   return dispatch => {
     AsyncStorage.removeItem('ap:auth:token');
     AsyncStorage.removeItem('ap:auth:expiryDate');
+    return AsyncStorage.removeItem('ap:auth:refreshToken');
+  };
+};
+
+export const authLogout = () => {
+  return dispatch => {
+    dispatch(authClearStorage()).then(() => {
+      App();
+    });
+    dispatch(authRemoveToken());
+  };
+};
+
+export const authRemoveToken = () => {
+  return {
+    type: AUTH_REMOVE_TOKEN
   };
 };

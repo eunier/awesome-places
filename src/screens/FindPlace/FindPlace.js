@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   Animated
-} from 'react-native';
-import { connect } from 'react-redux';
+} from "react-native";
+import { connect } from "react-redux";
 
-import PlaceList from '../../components/PlaceList/PlaceList';
-import { getPlaces } from '../../store/actions';
+import PlaceList from "../../components/PlaceList/PlaceList";
+import { getPlaces } from "../../store/actions/index";
 
 class FindPlaceScreen extends Component {
   static navigatorStyle = {
-    navBarButtonColor: 'orange'
+    navBarButtonColor: "orange"
   };
 
   state = {
@@ -32,10 +32,10 @@ class FindPlaceScreen extends Component {
   }
 
   onNavigatorEvent = event => {
-    if (event.type === 'NavBarButtonPress') {
-      if (event.id === 'sideDrawerToggle') {
+    if (event.type === "NavBarButtonPress") {
+      if (event.id === "sideDrawerToggle") {
         this.props.navigator.toggleDrawer({
-          side: 'left'
+          side: "left"
         });
       }
     }
@@ -58,7 +58,6 @@ class FindPlaceScreen extends Component {
       this.setState({
         placesLoaded: true
       });
-
       this.placesLoadedHandler();
     });
   };
@@ -68,7 +67,7 @@ class FindPlaceScreen extends Component {
       return place.key === key;
     });
     this.props.navigator.push({
-      screen: 'awesome-places.PlaceDetailScreen',
+      screen: "awesome-places.PlaceDetailScreen",
       title: selPlace.name,
       passProps: {
         selectedPlace: selPlace
@@ -98,7 +97,6 @@ class FindPlaceScreen extends Component {
         </TouchableOpacity>
       </Animated.View>
     );
-
     if (this.state.placesLoaded) {
       content = (
         <Animated.View
@@ -113,7 +111,6 @@ class FindPlaceScreen extends Component {
         </Animated.View>
       );
     }
-
     return (
       <View style={this.state.placesLoaded ? null : styles.buttonContainer}>
         {content}
@@ -125,18 +122,18 @@ class FindPlaceScreen extends Component {
 const styles = StyleSheet.create({
   buttonContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   },
   searchButton: {
-    borderColor: 'orange',
+    borderColor: "orange",
     borderWidth: 3,
     borderRadius: 50,
     padding: 20
   },
   searchButtonText: {
-    color: 'orange',
-    fontWeight: 'bold',
+    color: "orange",
+    fontWeight: "bold",
     fontSize: 26
   }
 });
@@ -153,7 +150,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(FindPlaceScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(FindPlaceScreen);

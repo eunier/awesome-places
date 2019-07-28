@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   View,
   Text,
@@ -6,8 +6,11 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform
-} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+} from "react-native";
+import Icon from "react-native-vector-icons/Ionicons";
+import { connect } from "react-redux";
+
+import { authLogout } from "../../store/actions/index";
 
 class SideDrawer extends Component {
   render() {
@@ -15,13 +18,13 @@ class SideDrawer extends Component {
       <View
         style={[
           styles.container,
-          { width: Dimensions.get('window').width * 0.8 }
+          { width: Dimensions.get("window").width * 0.8 }
         ]}
       >
-        <TouchableOpacity>
+        <TouchableOpacity onPress={this.props.onLogout}>
           <View style={styles.drawerItem}>
             <Icon
-              name={Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'}
+              name={Platform.OS === "android" ? "md-log-out" : "ios-log-out"}
               size={30}
               color="#aaa"
               style={styles.drawerItemIcon}
@@ -37,18 +40,24 @@ class SideDrawer extends Component {
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50,
-    backgroundColor: 'white',
+    backgroundColor: "white",
     flex: 1
   },
   drawerItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 10,
-    backgroundColor: '#eee'
+    backgroundColor: "#eee"
   },
   drawerItemIcon: {
     marginRight: 10
   }
 });
 
-export default SideDrawer;
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogout: () => dispatch(authLogout())
+  };
+};
+
+export default connect(null, mapDispatchToProps)(SideDrawer);
