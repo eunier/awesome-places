@@ -59,6 +59,10 @@ export const authStoreToken = (token, expiresIn, refreshToken) => {
     const now = new Date();
     const expiryDate = now.getTime() + expiresIn * 1000;
     dispatch(authSetToken(token, expiryDate));
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop
     AsyncStorage.setItem('ap:auth:token', token);
     AsyncStorage.setItem('ap:auth:expiryDate', expiryDate.toString());
     AsyncStorage.setItem('ap:auth:refreshToken', refreshToken);
@@ -78,6 +82,10 @@ export const authGetToken = () => {
     const promise = new Promise((resolve, reject) => {
       const token = getState().auth.token;
       const expiryDate = getState().auth.expiryDate;
+<<<<<<< HEAD
+=======
+
+>>>>>>> develop
       if (!token || new Date(expiryDate) <= new Date()) {
         let fetchedToken;
         AsyncStorage.getItem('ap:auth:token')

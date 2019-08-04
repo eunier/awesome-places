@@ -6,11 +6,19 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform
+<<<<<<< HEAD
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { connect } from "react-redux";
 
 import { authLogout } from "../../store/actions/index";
+=======
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { connect } from 'react-redux';
+
+import { authLogout } from '../../store/actions/index';
+>>>>>>> develop
 
 class SideDrawer extends Component {
   render() {
@@ -60,4 +68,11 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
+<<<<<<< HEAD
 export default connect(null, mapDispatchToProps)(SideDrawer);
+=======
+export default connect(
+  null,
+  mapDispatchToProps
+)(SideDrawer);
+>>>>>>> develop
