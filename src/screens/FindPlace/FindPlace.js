@@ -4,8 +4,10 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Animated
+  Animated,
+  Platform
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { connect } from 'react-redux';
 
 import PlaceList from '../../components/PlaceList/PlaceList';
@@ -79,6 +81,15 @@ class FindPlaceScreen extends Component {
   };
 
   render() {
+    const searchIcon = (
+      <Icon
+        name={Platform.OS === 'android' ? 'md-search' : 'ios-search'}
+        size={100}
+        color="orange"
+        style={styles.drawerItemIcon}
+      />
+    );
+
     let content = (
       <Animated.View
         style={{
@@ -95,7 +106,7 @@ class FindPlaceScreen extends Component {
       >
         <TouchableOpacity onPress={this.placesSearchHandler}>
           <View style={styles.searchButton}>
-            <Text style={styles.searchButtonText}>Find Places</Text>
+            <Text style={styles.searchButtonText}>{searchIcon}</Text>
           </View>
         </TouchableOpacity>
       </Animated.View>
@@ -131,9 +142,6 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   searchButton: {
-    borderColor: 'orange',
-    borderWidth: 3,
-    borderRadius: 50,
     padding: 20
   },
   searchButtonText: {

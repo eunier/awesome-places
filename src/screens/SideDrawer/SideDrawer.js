@@ -26,7 +26,7 @@ class SideDrawer extends Component {
             <Icon
               name={Platform.OS === 'android' ? 'md-log-out' : 'ios-log-out'}
               size={30}
-              color="#aaa"
+              color="orange"
               style={styles.drawerItemIcon}
             />
             <Text>Sign Out</Text>
