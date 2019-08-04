@@ -4,7 +4,7 @@ import ImagePicker from 'react-native-image-picker';
 
 class PickImage extends Component {
   state = {
-    pickedImaged: null
+    pickedImage: null
   };
 
   reset = () => {
@@ -36,7 +36,7 @@ class PickImage extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.placeholder}>
-          <Image source={this.state.pickedImaged} style={styles.previewImage} />
+          <Image source={this.state.pickedImage} style={styles.previewImage} />
         </View>
         <View style={styles.button}>
           <Button title="Pick Image" onPress={this.pickImageHandler} />

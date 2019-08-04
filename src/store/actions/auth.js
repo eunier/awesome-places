@@ -10,6 +10,7 @@ const API_KEY = 'AIzaSyCcL7CgmZuFNaUKmiSJZbskOZDy2ndrb-A';
 export const tryAuth = (authData, authMode) => {
   return dispatch => {
     dispatch(uiStartLoading());
+
     let url =
       'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=' +
       API_KEY;
@@ -18,6 +19,7 @@ export const tryAuth = (authData, authMode) => {
         'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=' +
         API_KEY;
     }
+
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
@@ -38,6 +40,7 @@ export const tryAuth = (authData, authMode) => {
       .then(parsedRes => {
         dispatch(uiStopLoading());
         console.log(parsedRes);
+
         if (!parsedRes.idToken) {
           alert('Authentication failed, please try again!');
         } else {
@@ -59,10 +62,7 @@ export const authStoreToken = (token, expiresIn, refreshToken) => {
     const now = new Date();
     const expiryDate = now.getTime() + expiresIn * 1000;
     dispatch(authSetToken(token, expiryDate));
-<<<<<<< HEAD
-=======
 
->>>>>>> develop
     AsyncStorage.setItem('ap:auth:token', token);
     AsyncStorage.setItem('ap:auth:expiryDate', expiryDate.toString());
     AsyncStorage.setItem('ap:auth:refreshToken', refreshToken);
@@ -82,12 +82,10 @@ export const authGetToken = () => {
     const promise = new Promise((resolve, reject) => {
       const token = getState().auth.token;
       const expiryDate = getState().auth.expiryDate;
-<<<<<<< HEAD
-=======
 
->>>>>>> develop
       if (!token || new Date(expiryDate) <= new Date()) {
         let fetchedToken;
+
         AsyncStorage.getItem('ap:auth:token')
           .catch(err => reject())
           .then(tokenFromStorage => {
@@ -113,6 +111,7 @@ export const authGetToken = () => {
         resolve(token);
       }
     });
+
     return promise
       .catch(err => {
         return AsyncStorage.getItem('ap:auth:refreshToken')
